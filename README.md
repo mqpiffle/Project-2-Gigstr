@@ -59,29 +59,31 @@ There are three distinct user-types for the app: _band_, _venue_, and _fan_, and
 -   AWS Amazon S3
 
 ## Coding Challenges and Opportunities
-This project will take what we learned about the Django backend and build upon that functionaity.  The primary concepts necessary to complete this project but not covered specifically during the course will be 
+
+This project will take what we learned about the Django backend and build upon that functionaity. The primary concepts necessary to complete this project but not covered specifically during the course will be
+
 -   setting up and allowing a user to choose from multilple user types
 -   integrating location finding API along many steps in the process.
 
 Because of this additional backend complexity, I have decided to forego using React as the frontend, and stick with Django for the completion of the this project.
 
 ## Route Tables
-UserProfile - each user will need to update their profile. still not 100%  how this works, if i need a separate profile route for each user
 
-route     | controller | action
-----------|------------|-------
-/profile/ | UserProfile| update user profile
+UserProfile - each user will need to update their profile. still not 100% how this works, if i need a separate profile route for each user
+
+| route     | controller  | action              |
+| --------- | ----------- | ------------------- |
+| /profile/ | UserProfile | update user profile |
 
 Event CRUD
 
-route     | controller | action
-----------|------------|-------
-events/   | event      | event index
-events/<int: event_id> | event | event detail
-events/create/ | event | event create
-events/<int: pk>/update/ | event | event update
-events/<int: pk>/delete | event | event delete
-
+| route                    | controller | action       |
+| ------------------------ | ---------- | ------------ |
+| events/                  | event      | event index  |
+| events/<int: event_id>   | event      | event detail |
+| events/create/           | event      | event create |
+| events/<int: pk>/update/ | event      | event update |
+| events/<int: pk>/delete  | event      | event delete |
 
 ## Wireframes
 
@@ -90,4 +92,4 @@ events/<int: pk>/delete | event | event delete
 
 ## ERD
 
-![Alt text](images/ERD-p4-v6.png)
+![Alt text](images/ERD-p4-v7.png)
