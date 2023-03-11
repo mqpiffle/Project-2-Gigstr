@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser, Event
+from .models import CustomUser, Event, FanProfile, BandProfile, VenueProfile, Genre, Mood, Star, Heart
 from django.utils.translation import gettext_lazy as _
 # ~~ This loads in the 'default' admin page
 # and appends our custom ifon to the bottom
@@ -8,10 +8,10 @@ from django.utils.translation import gettext_lazy as _
 class AccountAdmin(UserAdmin):
     # form = UserCreateForm2
     # add_form = UserCreateForm2
-    search_fields = ('email', )
+    search_fields = ('email', 'username')
     readonly_fields = ('date_joined', 'last_login')
     fieldsets = (
-        (None, {'fields': ('email', 'password')}),
+        (None, {'fields': ('username', 'email', 'password')}),
         (_('User Details'), {'fields': ('first_name', 'last_name', 'role')}),
         (
             _('Permissions'),
@@ -36,6 +36,16 @@ class AccountAdmin(UserAdmin):
                 },
             ),
         )
+    
+admin.site.register(CustomUser, AccountAdmin)
+admin.site.register(Event)
+admin.site.register(FanProfile)
+admin.site.register(BandProfile)
+admin.site.register(VenueProfile)
+admin.site.register(Genre)
+admin.site.register(Mood)
+admin.site.register(Star)
+admin.site.register(Heart)
 
 # class CustomUserAdmin(UserAdmin):
 #     fieldsets = (
@@ -66,9 +76,7 @@ class AccountAdmin(UserAdmin):
 #         self.inlines = [UserRolesInline]
 #         return super(UserAdmin, self).add_view(*args, **kwargs)
 
-fields = list(UserAdmin.fieldsets)
-fields[1] = ('User Details', {'fields': ('first_name', 'last_name', 'email', 'role')})
-UserAdmin.fieldsets = tuple(fields)
+# fields = list(UserAdmin.fieldsets)
+# fields[1] = ('User Details', {'fields': ('first_name', 'last_name', 'email', 'role')})
+# UserAdmin.fieldsets = tuple(fields)
 
-admin.site.register(CustomUser, AccountAdmin)
-admin.site.register(Event)

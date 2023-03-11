@@ -20,26 +20,32 @@ class Home(TemplateView):
     template_name = "home.html"
 
 #  VENUE PROFILE VIEWS
+class VenueList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+    model = VenueProfile
+    template_name = 'venues/index.html'
 class VenueProfileDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
-    model = BandProfile
-    template_name = 'venue-details/details.html'
+    model = VenueProfile
+    template_name = 'venues/details.html'
 
 class VenueProfileCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
-    model = BandProfile
+    model = VenueProfile
     fields = ['display_name', 'location', 'website','description', 'image']
 
 class VenueProfileUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
-    model = BandProfile
+    model = VenueProfile
     fields = ['display_name', 'location', 'website','description', 'image']
 
 class VenueProfileDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
-    model = BandProfile
-    success_url = '/venue-details/'  
+    model = VenueProfile
+    success_url = '/venues/'  
 
 #  BAND PROFILE VIEWS
+class BandList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+    model = BandProfile
+    template_name = 'bands/index.html'
 class BandProfileDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     model = BandProfile
-    template_name = 'band-details/details.html'
+    template_name = 'bands/details.html'
 
 class BandProfileCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = BandProfile
@@ -51,12 +57,15 @@ class BandProfileUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView)
 
 class BandProfileDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = BandProfile
-    success_url = '/band-details/'   
+    success_url = '/bands/'   
 
 #  FAN PROFILE VIEWS
+class FanList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+    model = FanProfile
+    template_name = 'fans/index.html'
 class FanProfileDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     model = FanProfile
-    template_name = 'fan-details/details.html'
+    template_name = 'fans/details.html'
 
 class FanProfileCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = FanProfile
@@ -68,7 +77,7 @@ class FanProfileUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
 class FanProfileDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = FanProfile
-    success_url = '/fan-details/'
+    success_url = '/fans/'
 
 # EVENTS VIEWS
 class EventList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
@@ -81,11 +90,11 @@ class EventDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
 
 class EventCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Event
-    fields = ['location', 'website', 'description', 'image', 'genre']
+    fields = ['location', 'website', 'description', 'image', 'genre', 'mood']
 
 class EventUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Event
-    fields = ['location', 'website', 'description', 'image', 'genre']
+    fields = ['location', 'website', 'description', 'image', 'genre', 'mood']
 
 class EventDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Event
@@ -96,9 +105,10 @@ def signup(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
+            role = form.cleaned_data('role')
             user = form.save()
             login(request, user)
-            return redirect('home')
+            return redirect(f'{role}s/create')
         else:
             error_message  = 'Invalid sign up - please try again.'
     form = CustomUserCreationForm()

@@ -31,172 +31,102 @@ def user(sender: CustomUser, instance: CustomUser, ** kwargs) -> None:
         group = Group.objects.get(name=GROUPS[instance.role])
         transaction.on_commit(lambda: instance.groups.set([group], clear=True))
 
-# class FanManager(BaseUserManager):
-#     def get_queryset(self, *args, **kwargs):
-#         results = super().get_queryset(*args, **kwargs)
-#         return results.filter(role = User.Role.FAN)
-
-#     base_role = User.Role.FAN
-
-#     fan = FanManager()
-#     class Meta:
-#         proxy = True
-
-#     def welcome(self):
-#         return "Only for fans."
-
-
-        
-    
-
-# class BandManager(BaseUserManager):
-#     def get_queryset(self, *args, **kwargs):
-#         results = super().get_queryset(*args, **kwargs)
-#         return results.filter(role = User.Role.BAND)
-
-
-# class BandUser(User):
-
-#     base_role = User.Role.BAND
-
-#     band = BandManager()
-#     class Meta:
-#         proxy = True
-
-#     def welcome(self):
-#         return "Only for bands."
-    
-# class VenueManager(BaseUserManager):
-#     def get_queryset(self, *args, **kwargs):
-#         results = super().get_queryset(*args, **kwargs)
-#         return results.filter(role = User.Role.VENUE)
-
-
-# class VenueUser(User):
-
-#     base_role = User.Role.VENUE
-
-#     venue = VenueManager()
-#     class Meta:
-#         proxy = True
-
-#     def welcome(self):
-#         return "Only for venues."
-    
-# # Other models
-
-    
-# class UserAccountManager(BaseUserManager):
-#     def create_user(self, email, username, password=None):
-#         if not email:
-#             raise ValueError("Email field is required !")
-#         if not username:
-#             raise ValueError("Username field is required !")
-#         if not password:
-#             raise ValueError("Password field is required !")
-#         user = self.model(
-#             email=email,
-#             username=username
-#         )
-#         user.set_password(password)
-#         user.save(using=self._db)
-#         return user
- 
-#     def create_superuser(self, email, username, password):
-#         user = self.create_user(
-#             email=email, username=username, password=password)
-#         user.is_superuser = True
-#         user.is_staff = True
-#         user.is_admin = True
-#         user.save()
-#         return user
- 
-#     def create_fan(self, email, username, password):
-#         user = self.create_user(email, username, password)
-#         user.is_student = True
-#         user.save()
-#         return user
- 
-#     def create_venue(self, email, username, password):
-#         user = self.create_user(email, username, password)
-#         user.is_teacher = True
-#         user.save()
-#         return user
- 
-#     def create_band(self, email, username, password):
-#         user = self.create_user(email, username, password)
-#         user.is_principal = True
-#         user.save()
-#         return user
- 
- 
-# class UserAccount(AbstractBaseUser):
-#     username = models.CharField(max_length=200, blank=False, null=False)
-#     email = models.CharField(
-#         max_length=200, blank=False, null=False, unique=True)
- 
-#     is_active = models.BooleanField(default=True)
-#     is_staff = models.BooleanField(default=False)
-#     is_admin = models.BooleanField(default=False)
-#     is_superuser = models.BooleanField(default=False)
- 
-#     is_fan = models.BooleanField(default=False)
-#     is_venue = models.BooleanField(default=False)
-#     is_band = models.BooleanField(default=False)
- 
-#     objects = UserAccountManager()
- 
-#     USERNAME_FIELD = "email"
-#     REQUIRED_FIELDS = ['username']
- 
-#     def __unicode__(self):
-#         return str(self.username)
- 
-#     def has_perm(self, perm, obj=None):
-#         return self.is_admin
- 
-#     def has_module_perms(self, app_label):
-#         return True
-    
+# USER PROFILES
+# on base account sign up, user will be redirected
+# to create a profile before continuing   
 class FanProfile(models.Model):
-    display_name = models.CharField(max_length=25)
+    display_name = models.CharField(max_length=25, null=True, blank=True)
     # location should probably be it's own model, OtO 
-    location = models.CharField(max_length=50)
-    website = models.CharField(max_length=50)
-    description = models.TextField(max_length=500)
-    image = models.CharField(max_length=50)
+    location = models.CharField(max_length=50, null=True, blank=True)
+    website = models.CharField(max_length=50, null=True, blank=True)
+    description = models.TextField(max_length=500, null=True, blank=True)
+    image = models.CharField(max_length=50, null=True, blank=True)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
 
     def get_absolute_url(self):
         return reverse("fan_detail", kwargs={"pk": self.pk})
     
+    def __str__(self):
+        return self.display_name
+    
+class Genre(models.Model):
+    name = models.CharField(max_length=20)
 
+    def __str__(self):
+        return self.name
+
+
+class Mood(models.Model):
+    name = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.name
+    
 class BandProfile(models.Model):
-    name = models.CharField(max_length=50)
+    # GENRES = (
+    #     ('J', _('Jazz')),
+    #     ('B', _('Blues')),
+    #     ('R', _('Rock')),
+    #     ('M', _('Metal')),
+    #     ('P', _('Punk')),
+    #     ('K', _('Funk')),
+    #     ('Z', _('Pop')),
+    #     ('C', _('Classical')),
+    #     ('F', _('Folk')),
+    #     ('W', _('World')),
+    #     ('D', _('Dance')),
+    #     ('E', _('Electronic')),
+    #     ('A', _('Acoustic')),
+    #     ('Y', _('Yacht Rock')),
+    #     ('X', _('Covers')),
+    #     ('O', _('Originals')),
+    # )
+
+    # MOODS = (
+    #     ('A', _('Aggressive')),
+    #     ('L', _('Lively')),
+    #     ('E', _('Energetic')),
+    #     ('L', _('Loud')),
+    #     ('D', _('Dynamic')),
+    # )
+
+    name = models.CharField(max_length=50, null=True, blank=True)
     # location should probably be it's own model, OtO 
-    location = models.CharField(max_length=50)
-    website = models.CharField(max_length=50)
-    description = models.TextField(max_length=500)
-    image = models.CharField(max_length=50)
+    location = models.CharField(max_length=50, null=True, blank=True)
+    website = models.CharField(max_length=50, null=True, blank=True)
+    description = models.TextField(max_length=500, null=True, blank=True)
+    image = models.CharField(max_length=50, null=True, blank=True)
     # hopefully tags can be implemented
-    genre = models.CharField(max_length=50)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    # genre = models.CharField(max_length=1, choices=GENRES, null=True, blank=True)
+    genres = models.ManyToManyField(Genre, null=True, blank=True)
+    # mood = models.CharField(max_length=1, choices=MOODS, null=True, blank=True)
+    moods = models.ManyToManyField(Mood, null=True, blank=True)
+    # link a profile to a user
+    # i think i want one user to have only one profile (for now)
+    # so maybe use a OtO relation instead?
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
 
     def get_absolute_url(self):
         return reverse("band_detail", kwargs={"pk": self.pk})
     
+    def __str__(self):
+        return self.display_name
 
 class VenueProfile(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, null=True, blank=True)
     # location should probably be it's own model, OtO 
-    location = models.CharField(max_length=50)
-    website = models.CharField(max_length=50)
-    description = models.TextField(max_length=500)
-    image = models.CharField(max_length=50)
+    location = models.CharField(max_length=50, null=True, blank=True)
+    website = models.CharField(max_length=50, null=True, blank=True)
+    description = models.TextField(max_length=500, null=True, blank=True)
+    image = models.CharField(max_length=50, null=True, blank=True)
     # hopefully tags can be implemented
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
 
     def get_absolute_url(self):
         return reverse("venue_detail", kwargs={"pk": self.pk})
+    
+    def __str__(self):
+        return self.display_name
     
 class Event(models.Model):
     start_date_time = models.DateTimeField('start date & time')
