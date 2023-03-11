@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser
+from .models import CustomUser, Event
 from django.utils.translation import gettext_lazy as _
 # ~~ This loads in the 'default' admin page
 # and appends our custom ifon to the bottom
@@ -11,21 +11,21 @@ class AccountAdmin(UserAdmin):
     search_fields = ('email', )
     readonly_fields = ('date_joined', 'last_login')
     fieldsets = (
-        (None, {"fields": ("email", "password")}),
-        (_("Personal info"), {"fields": ("first_name", "last_name")}),
+        (None, {'fields': ('email', 'password')}),
+        (_('User Details'), {'fields': ('first_name', 'last_name', 'role')}),
         (
-            _("Permissions"),
+            _('Permissions'),
             {
-                "fields": (
-                    "is_active",
-                    "is_staff",
-                    "is_superuser",
-                    "groups",
-                    "user_permissions",
+                'fields': (
+                    'is_active',
+                    'is_staff',
+                    'is_superuser',
+                    'groups',
+                    'user_permissions',
                 ),
             },
         ),
-        (_("Important dates"), {"fields": ("last_login", "date_joined")}),
+        (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
     add_fieldsets = (
             (
@@ -71,3 +71,4 @@ fields[1] = ('User Details', {'fields': ('first_name', 'last_name', 'email', 'ro
 UserAdmin.fieldsets = tuple(fields)
 
 admin.site.register(CustomUser, AccountAdmin)
+admin.site.register(Event)

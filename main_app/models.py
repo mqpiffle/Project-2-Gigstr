@@ -29,7 +29,7 @@ GROUPS = ['Admin', 'Fan', 'Band', 'Venue']
 @receiver(post_save, sender=CustomUser)
 def user(sender: CustomUser, instance: CustomUser, ** kwargs) -> None:
         group = Group.objects.get(name=GROUPS[instance.role])
-        instance.groups.set([group], clear=True)
+        transaction.on_commit(lambda: instance.groups.set([group], clear=True))
 
 # class FanManager(BaseUserManager):
 #     def get_queryset(self, *args, **kwargs):
@@ -193,7 +193,6 @@ class VenueProfile(models.Model):
     description = models.TextField(max_length=500)
     image = models.CharField(max_length=50)
     # hopefully tags can be implemented
-    genre = models.CharField(max_length=50)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
     def get_absolute_url(self):
