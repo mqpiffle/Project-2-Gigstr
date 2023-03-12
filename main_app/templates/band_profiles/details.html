@@ -1,0 +1,24 @@
+{%extends 'base.html'%}
+{% block content %}
+    <h1>Profile Details</h1>
+    <p>{{ band_profile.name }}</p>
+    <p>{{ band_profile.location }}</p>
+    <p>{{ band_profile.website }}</p>
+    <p>{{ band_profile.description }}</p>
+    <p>{{ band_profile.image }}</p>
+    <ul>
+    {% for genre in band_profile.genres_set.all %}
+        <p>{{ genre }}</p>
+    {% empty %}
+        <p>No tags set.</p>
+    {% endfor %}
+    </ul>
+    <ul>
+    {% for mood in band_profile.moods_set.all %}
+        <p>{{ mood }}</p>
+    {% empty %}
+        <p>No tags set.</p>
+    {% endfor %}
+    </ul>
+    <p></p>
+{% endblock %}

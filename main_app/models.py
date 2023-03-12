@@ -63,33 +63,6 @@ class Mood(models.Model):
         return self.name
     
 class BandProfile(models.Model):
-    # GENRES = (
-    #     ('J', _('Jazz')),
-    #     ('B', _('Blues')),
-    #     ('R', _('Rock')),
-    #     ('M', _('Metal')),
-    #     ('P', _('Punk')),
-    #     ('K', _('Funk')),
-    #     ('Z', _('Pop')),
-    #     ('C', _('Classical')),
-    #     ('F', _('Folk')),
-    #     ('W', _('World')),
-    #     ('D', _('Dance')),
-    #     ('E', _('Electronic')),
-    #     ('A', _('Acoustic')),
-    #     ('Y', _('Yacht Rock')),
-    #     ('X', _('Covers')),
-    #     ('O', _('Originals')),
-    # )
-
-    # MOODS = (
-    #     ('A', _('Aggressive')),
-    #     ('L', _('Lively')),
-    #     ('E', _('Energetic')),
-    #     ('L', _('Loud')),
-    #     ('D', _('Dynamic')),
-    # )
-
     name = models.CharField(max_length=50, null=True, blank=True)
     # location should probably be it's own model, OtO 
     location = models.CharField(max_length=50, null=True, blank=True)
@@ -98,9 +71,9 @@ class BandProfile(models.Model):
     image = models.CharField(max_length=50, null=True, blank=True)
     # hopefully tags can be implemented
     # genre = models.CharField(max_length=1, choices=GENRES, null=True, blank=True)
-    genres = models.ManyToManyField(Genre, null=True, blank=True)
+    genres = models.ManyToManyField(Genre)
     # mood = models.CharField(max_length=1, choices=MOODS, null=True, blank=True)
-    moods = models.ManyToManyField(Mood, null=True, blank=True)
+    moods = models.ManyToManyField(Mood)
     # link a profile to a user
     # i think i want one user to have only one profile (for now)
     # so maybe use a OtO relation instead?
@@ -110,7 +83,7 @@ class BandProfile(models.Model):
         return reverse("band_detail", kwargs={"pk": self.pk})
     
     def __str__(self):
-        return self.display_name
+        return self.name
 
 class VenueProfile(models.Model):
     name = models.CharField(max_length=50, null=True, blank=True)
@@ -126,7 +99,7 @@ class VenueProfile(models.Model):
         return reverse("venue_detail", kwargs={"pk": self.pk})
     
     def __str__(self):
-        return self.display_name
+        return self.name
     
 class Event(models.Model):
     start_date_time = models.DateTimeField('start date & time')
