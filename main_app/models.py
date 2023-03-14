@@ -1,10 +1,11 @@
 from django.db import models, transaction
 
 from django.urls import reverse
+from django.dispatch import receiver
 from django.db.models.signals import post_save
 # bring in a copy of the User table so we can customize users to pur needs
 from django.contrib.auth.models import AbstractUser, BaseUserManager, Group
-from django.dispatch import receiver
+
 from django.utils.translation import gettext_lazy as _
 # custom user model overrides
 class CustomUser(AbstractUser):
@@ -28,10 +29,10 @@ class CustomUser(AbstractUser):
         
 GROUPS = ['Admin', 'Fan', 'Band', 'Venue']
 @receiver(post_save, sender=CustomUser)
-def user(sender: CustomUser, instance: CustomUser, ** kwargs) -> None:
+def user(sender: CustomUser, instance: CustomUser, created, ** kwargs) -> None:
         group = Group.objects.get(name=GROUPS[instance.role])
         transaction.on_commit(lambda: instance.groups.set([group], clear=True))
-
+        
 # USER PROFILES
 # on base account sign up, user will be redirected
 # to create a profile before continuing   
@@ -45,11 +46,19 @@ class FanProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
 
     def get_absolute_url(self):
-        return reverse("fan_detail", kwargs={"pk": self.pk})
+        return reverse("fans_detail", kwargs={"fan_id": self.id})
     
     def __str__(self):
-        return self.display_name
+        if self.display_name:
+            return self.display_name
+        else:
+            return str(self.user_id)
     
+@receiver(post_save, sender=CustomUser)
+def create_fan_profile(sender, instance, created, **kwargs):
+    if instance.role == 1 and created:
+        FanProfile.objects.create(user=instance)
+
 class Genre(models.Model):
     name = models.CharField(max_length=20)
 
@@ -86,10 +95,15 @@ class BandProfile(models.Model):
        )
         
     def get_absolute_url(self):
-        return reverse("band_detail", kwargs={"band_id": self.id})
+        return reverse("bands_detail", kwargs={"band_id": self.id})
     
     def __str__(self):
         return self.name
+    
+@receiver(post_save, sender=CustomUser)
+def create_band_profile(sender, instance, created, **kwargs):
+    if instance.role == 2 and created:
+        BandProfile.objects.create(user=instance)
 
 class VenueProfile(models.Model):
     name = models.CharField(max_length=50, null=True, blank=True)
@@ -102,10 +116,15 @@ class VenueProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
 
     def get_absolute_url(self):
-        return reverse("venue_detail", kwargs={"pk": self.pk})
+        return reverse("venues_detail", kwargs={"venue_id": venue_id})
     
     def __str__(self):
         return self.name
+    
+@receiver(post_save, sender=CustomUser)
+def create_venue_profile(sender, instance, created, **kwargs):
+    if instance.role == 3 and created:
+        VenueProfile.objects.create(user=instance)
     
 class Event(models.Model):
     date = models.DateField('date', null=True, blank=True)

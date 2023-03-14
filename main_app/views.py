@@ -12,7 +12,7 @@ from .forms import CustomUserCreationForm, EventForm
 from django.contrib.auth import login, authenticate
 # MIXINS
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-
+import pdb
 # !! CHECK OUT PermissionsRequiredMixin
 # to give routes permissions based on user role/group
 # use with class-based views
@@ -22,23 +22,28 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 # function view
 # first step is to recreate the home view on its own with a custom view
 def home(request):
-    
+    print(request.resolver_match.url_name)
+    # pdb.set_trace()
 # next step - see if the home view can process their role
-  
+    if request.user.is_authenticated:
+        user = request.user
+        role = user.role
+        print(user.id)
+        #     # next see if 'if else' redirects from the login view 
+        # if user is not None:
+            # user = authenticate(username=username, password=password)
+        if user.is_active:
+            if role == 1:
+                fan_profile = FanProfile.objects.get(user=user.id)
+                return redirect('gigstr:fans_detail', fan_id=fan_profile.id)
+            if role == 2:
+                band_profile = BandProfile.objects.get(user=user.id)
+                return redirect('gigstr:bands_detail', band_id=band_profile.id)
+            if role == 3:
+                venue_profile = VenueProfile.objects.get(user=user.id)
+                return redirect('gigstr:venues_detail', venue_id=venue_profile.id)
+                
     return render(request, 'home.html')
-    
-    # next see if 'if else' redirects from the login view 
-
-    # if request.user is not None:
-        # user = authenticate(username=username, password=password)
-        # if user.is_active:
-        #     login(request, user)
-        #     if user.role == 'Band':
-        #         return redirect('gigstr:bands_details')
-        #     if user.role == 'Venue':
-        #         return redirect('gigstr:venue_details')
-        #     if user.role == 'Fan':
-        #         return redirect('gigstr:fan_details')
 
 
 #  VENUE PROFILE VIEWS
@@ -173,9 +178,9 @@ class EventCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     
 
 class EventUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
-    permission_required = 'main_app.setevent'
+    permission_required = 'main_app.set_event'
     model = Event
-    fields = ['start_date_time', 'end_date_time', 'ticket_price', 'note', 'bands', 'venue']
+    fields = ['date', 'time', 'ticket_price', 'note', 'bands', 'venue']
 
 class EventDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     permission_required = 'main_app.remove_event'
@@ -205,14 +210,14 @@ class EventDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
 
 
 def signup(request):
+    # pdb.set_trace()
     error_message = ''
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            role = form.cleaned_data('role')
             user = form.save()
             login(request, user)
-            return redirect('bands/index')
+            return redirect('gigstr:home')
         else:
             error_message  = 'Invalid sign up - please try again.'
     form = CustomUserCreationForm()

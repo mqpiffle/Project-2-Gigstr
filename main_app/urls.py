@@ -11,9 +11,9 @@ urlpatterns = [
     # PROFILE URLS
     # FANS
     path('fans/', views.FanList.as_view(), name='fans_index'),
-    path('fans/<int:pk>/', views.FanProfileDetail.as_view(), name='fans_detail'),
+    path('fans/<int:fan_id>/', views.FanProfileDetail.as_view(), name='fans_detail'),
     path('fans/create/', views.FanProfileCreate.as_view(), name='fans_create'),
-    path('fans/<int:pk>/update/', views.FanProfileUpdate.as_view(), name='fans_update'),
+    path('fans/<int:fan_id>/update/', views.FanProfileUpdate.as_view(), name='fans_update'),
     path('fans/<int:pk>/delete/', views.FanProfileDelete.as_view(), name='fans_delete'),
     # BANDS
     path('bands/', views.BandList.as_view(), name='bands_index'),
@@ -22,7 +22,6 @@ urlpatterns = [
     path('bands/<int:pk>/update/', views.BandProfileUpdate.as_view(), name='bands_update'),
     path('bands/<int:pk>/delete/', views.BandProfileDelete.as_view(), name='bands_delete'),
     # path('bands/<int:event_id>/dashboard/', views.BandDashboard.as_view(), name='bands_dashboard'),
-    
     # VENUES
     path('venues/', views.VenueList.as_view(), name='venues_index'),
     path('venues/<int:pk>/', views.VenueProfileDetail.as_view(), name='venues_detail'),
