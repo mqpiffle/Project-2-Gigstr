@@ -1,0 +1,46 @@
+{%extends 'base.html'%} {% block content %}
+<div>
+    <h1>Profile Details</h1>
+    <p>{{ band_profile.name }}</p>
+    <p>{{ band_profile.location }}</p>
+    <p>{{ band_profile.website }}</p>
+    <p>{{ band_profile.description }}</p>
+    <p>{{ band_profile.image }}</p>
+    <ul>
+        {% for genre in band_profile.genres_set.all %}
+        <p>{{ genre }}</p>
+        {% empty %}
+        <p>No tags set.</p>
+        {% endfor %}
+    </ul>
+    <ul>
+        {% for mood in band_profile.moods_set.all %}
+        <p>{{ mood }}</p>
+        {% empty %}
+        <p>No tags set.</p>
+        {% endfor %}
+    </ul>
+</div>
+<div>
+    <h2>Our Dashboard</h2>
+    <h3>{{ user.username }}</h3>
+    {% comment %} left sidebar, band info {% endcomment %}
+    <div>
+        <h4>{{ band_profile.name }}</h4>
+        {% comment %} etc {% endcomment %}
+    </div>
+    <div>
+        {% for event in our_events %}
+        <div>
+            <p>{{ event.start_date_time }} - {{ event.end_date_time }}</p>
+            {% for band in event.band_set.all %}
+            <h5>{{ band.name }}</h5>
+            {% endfor %}
+            <h5>{{ event.venue }}</h5>
+            <p>{{ event.ticket_price }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<p></p>
+{% endblock %}

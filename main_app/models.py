@@ -24,6 +24,7 @@ class CustomUser(AbstractUser):
     #     if not self.pk:
     #         self.role = self.base_role
     #         return super().save(*args, **kwargs)
+    
         
 GROUPS = ['Admin', 'Fan', 'Band', 'Venue']
 @receiver(post_save, sender=CustomUser)
@@ -63,7 +64,7 @@ class Mood(models.Model):
         return self.name
     
 class BandProfile(models.Model):
-    name = models.CharField(max_length=50, null=True, blank=True)
+    name = models.CharField(max_length=50, null=True, blank=True, unique=True)
     # location should probably be it's own model, OtO 
     location = models.CharField(max_length=50, null=True, blank=True)
     website = models.CharField(max_length=50, null=True, blank=True)
@@ -79,8 +80,13 @@ class BandProfile(models.Model):
     # so maybe use a OtO relation instead?
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
 
+    class Meta:
+        permissions = (
+            ("dashboard", "access band dashboard"),
+       )
+        
     def get_absolute_url(self):
-        return reverse("band_detail", kwargs={"pk": self.pk})
+        return reverse("band_detail", kwargs={"band_id": self.id})
     
     def __str__(self):
         return self.name
@@ -102,16 +108,19 @@ class VenueProfile(models.Model):
         return self.name
     
 class Event(models.Model):
-    start_date_time = models.DateTimeField('start date & time')
-    end_date_time = models.DateTimeField('end date & time')
+    date = models.DateField('date', null=True, blank=True)
+    time = models.CharField(max_length=20, null=True, blank=True)
     ticket_price = models.DecimalField(max_digits=7, decimal_places=2)
     note = models.TextField(max_length=250)
     # MtM field for bands
     bands = models.ManyToManyField(BandProfile)
     venue = models.ForeignKey(VenueProfile, on_delete=models.CASCADE)
 
+    class Meta:
+        ordering = ['-date']
+
     def get_absolute_url(self):
-        return reverse("events_detail", kwargs={"event_id": self.id})
+        return reverse('events_detail', kwargs={'event_id': self.id})
     
 
 class Star(models.Model):

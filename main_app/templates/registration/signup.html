@@ -1,10 +1,20 @@
-{% extends 'base.html' %}
-{% block content %}
-    <h1>Sign Up</h1>
-    <p>{{ error_message }}</p>
-    <form action="{% url 'signup' %}" method='POST'>
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value='Sign Up'>
-    </form>
+{% extends 'base.html' %} {% block content %}
+<h1>Sign Up</h1>
+<p>{{ error_message }}</p>
+<form
+    action="{% url 'gigstr:signup' %}"
+    method="POST"
+>
+    {% csrf_token %} {{ form.as_p }}
+    <input
+        type="submit"
+        value="Sign Up"
+    />
+</form>
+<script>
+    const roleSelect = document.getElementById('id_role')
+    M.FormSelect.init(roleSelect, {
+        isMultiple: false,
+    })
+</script>
 {% endblock %}

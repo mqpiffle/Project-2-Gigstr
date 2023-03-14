@@ -114,6 +114,8 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
+TIME_INPUT_FORMATS = ['%H:%M:%S', '%H:%M %p', '%H:%M:%S.%f', '%H:%M']
+
 USE_I18N = True
 
 USE_TZ = True
@@ -130,5 +132,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/'
+
+LOGOUT_REDIRECT_URL = '/'
 
 AUTH_USER_MODEL = 'main_app.CustomUser'
