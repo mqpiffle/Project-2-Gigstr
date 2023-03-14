@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Rye&display=swap');
+*,
+*::before,
+*::after {
+    background-color: hsl(270, 100%, 9%) !important;
+    color: white;
+}
+
+body {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
+.g-tags {
+    font-weight: 600;
+    padding: 0.125rem 0.5rem;
+    color: black !important;
+    border-radius: 0.5rem;
+}
+.g-genres {
+    background-color: rgb(162, 162, 81) !important;
+}
+
+.g-moods {
+    background-color: rgb(108, 126, 180) !important;
+}

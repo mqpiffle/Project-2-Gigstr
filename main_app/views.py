@@ -62,7 +62,7 @@ class VenueProfileCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView
     fields = ['name', 'location', 'website','description', 'image']
 
 class VenueProfileUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
-    permission_required = 'main_app.set_venueprofile'
+    permission_required = 'main_app.change_venueprofile'
     model = VenueProfile
     fields = ['name', 'location', 'website','description', 'image']
 
@@ -119,7 +119,7 @@ class BandProfileCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
     #         return super().get(*args, **kwargs)
         
 class BandProfileUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
-    permission_required = 'main_app.set_bandprofile'
+    permission_required = 'main_app.change_bandprofile'
     model = BandProfile
     fields = ['name', 'location', 'website','description', 'image', 'genres', 'moods']
 
@@ -155,12 +155,12 @@ class FanProfileDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
 
 # EVENTS VIEWS
 class EventList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
-    permission_required = 'main_app.viewevent'
+    permission_required = 'main_app.view_event'
     model = Event
     template_name = 'events/index.html'
 
 class EventDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
-    permission_required = 'main_app.viewevent'
+    permission_required = 'main_app.view_event'
     model = Event
     template_name = 'events/details.html'
 

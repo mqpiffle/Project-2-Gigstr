@@ -12,14 +12,17 @@
             name="viewport"
             content="width=device-width, initial-scale=1.0"
         />
-        
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Rye&display=swap" rel="stylesheet">  
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        
         <link
-            type="text/css"
             rel="stylesheet"
+            type="text/css"
             href="{% static 'css/styles.css' %}"
         />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
         <title>Gigstr</title>
     </head>
     <body>
@@ -27,7 +30,7 @@
             <nav >
                 <div class="nav-wrapper">
                     <ul>
-                        <li><a href="/" class="left brand-logo">Gigstr</a></li>
+                        <li class="g-brand"><a href="/" class="left brand-logo">Gigstr</a></li>
                     </ul>
                     <ul class="right">
                     {% if user.is_authenticated %}

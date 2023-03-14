@@ -46,7 +46,7 @@ class FanProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
 
     def get_absolute_url(self):
-        return reverse("fans_detail", kwargs={"fan_id": self.id})
+        return reverse("gigstr:fans_detail", kwargs={"fan_id": self.id})
     
     def __str__(self):
         if self.display_name:
@@ -89,16 +89,14 @@ class BandProfile(models.Model):
     # so maybe use a OtO relation instead?
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
 
-    class Meta:
-        permissions = (
-            ("dashboard", "access band dashboard"),
-       )
-        
     def get_absolute_url(self):
-        return reverse("bands_detail", kwargs={"band_id": self.id})
+        return reverse("gigstr:bands_detail", kwargs={"band_id": self.id})
     
     def __str__(self):
-        return self.name
+        if self.name:
+            return self.name
+        else:
+            return str(self.user.id)
     
 @receiver(post_save, sender=CustomUser)
 def create_band_profile(sender, instance, created, **kwargs):
@@ -116,7 +114,7 @@ class VenueProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
 
     def get_absolute_url(self):
-        return reverse("venues_detail", kwargs={"venue_id": venue_id})
+        return reverse("gigstr:venues_detail", kwargs={"venue_id": self.id})
     
     def __str__(self):
         return self.name
@@ -139,7 +137,7 @@ class Event(models.Model):
         ordering = ['-date']
 
     def get_absolute_url(self):
-        return reverse('events_detail', kwargs={'event_id': self.id})
+        return reverse('gigstr:events_detail', kwargs={'event_id': self.id})
     
 
 class Star(models.Model):

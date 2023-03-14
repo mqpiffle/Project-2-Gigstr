@@ -1,38 +1,50 @@
-{%extends 'base.html'%} {% block content %}
+{% extends 'base.html' %} {% block content %}
 <div>
     <h1>Profile Details</h1>
-    <p>{{ band_profile.name }}</p>
-    <p>{{ band_profile.location }}</p>
-    <p>{{ band_profile.website }}</p>
-    <p>{{ band_profile.description }}</p>
-    <p>{{ band_profile.image }}</p>
+    <p>Name: {{ band_profile.name }}</p>
+    <p>Location: {{ band_profile.location }}</p>
+    <p>Website: {{ band_profile.website }}</p>
+    <p>Description: {{ band_profile.description }}</p>
+    <p>Image: {{ band_profile.image }}</p>
     <ul>
-        {% for genre in band_profile.genres_set.all %}
-        <p>{{ genre }}</p>
-        {% empty %}
-        <p>No tags set.</p>
-        {% endfor %}
+        {% if band_profile.genres.count %}
+        <p>
+            Genres: {% for genre in band_profile.genres.all %}
+            <span class="g-tags g-genres">{{ genre.name }}</span>
+        </p>
+        {% endfor %} {% else %}
+        <p>No genres set.</p>
+        {% endif %}
     </ul>
     <ul>
-        {% for mood in band_profile.moods_set.all %}
-        <p>{{ mood }}</p>
-        {% empty %}
-        <p>No tags set.</p>
-        {% endfor %}
+        {% if band_profile.moods.count %}
+        <p>
+            Moods: {% for mood in band_profile.moods.all %}
+            <span class="g-tags g-moods">{{ mood.name }}</span>
+        </p>
+        {% endfor %} {% else %}
+        <p>No moods set.</p>
+        {% endif %}
     </ul>
+    <a
+        href="{% url 'gigstr:bands_update' band_profile.id %}"
+        class="btn grey lighten-2 black-text"
+        >Update</a
+    >
 </div>
 <div>
     <h2>Our Dashboard</h2>
-    <h3>{{ user.username }}</h3>
-    {% comment %} left sidebar, band info {% endcomment %}
+    <h3>Upcoming Events</h3>
+    <a
+        href="{% url 'gigstr:events_create' %}"
+        class="btn grey lighten-2 black-text"
+        >Add New Event</a
+    >
     <div>
-        <h4>{{ band_profile.name }}</h4>
-        {% comment %} etc {% endcomment %}
-    </div>
-    <div>
-        {% for event in our_events %}
-        <div>
-            <p>{{ event.start_date_time }} - {{ event.end_date_time }}</p>
+        {% for event in band_events %}
+        <div class="card">
+            <p>{{ event.date }}</p>
+            <p>{{ event.time }}</p>
             {% for band in event.band_set.all %}
             <h5>{{ band.name }}</h5>
             {% endfor %}

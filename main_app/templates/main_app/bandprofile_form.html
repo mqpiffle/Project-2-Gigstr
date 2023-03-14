@@ -1,5 +1,5 @@
 {% extends 'base.html' %} {% block content %} {% if object %}
-<h1>Edit <span class="teal-text">{{ object.name }}</span></h1>
+<h1>Edit <span class="indigo-text">{{ object.name }}</span></h1>
 {% else %}
 <h1>Add Band Profile</h1>
 {% endif %}
@@ -13,7 +13,7 @@
     {% csrf_token %}
     <table>
         <!-- Render the inputs inside of a table with <tr>s and <td>s -->
-        {{ form.as_table }}
+        {{ form.as_p }}
     </table>
     <input
         type="submit"
@@ -21,4 +21,14 @@
         class="btn"
     />
 </form>
+<script>
+    const genresSelect = document.getElementById('id_genres')
+    M.FormSelect.init(genresSelect, {
+        isMultiple: true,
+    })
+    const moodsSelect = document.getElementById('id_moods')
+    M.FormSelect.init(moodsSelect, {
+        isMultiple: true,
+    })
+</script>
 {% endblock %}
