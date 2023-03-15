@@ -7,26 +7,18 @@
     <p>Description: {{ band_profile.description }}</p>
     <p>Image: {{ band_profile.image }}</p>
     <div class="g-tags-container">
-        {% if band_profile.genres.count %}
         <div>Genres:</div>
         {% for genre in band_profile.genres.all %}
         <div class="g-tags g-genres">{{ genre.name }}</div>
         {% endfor %}
     </div>
-    {% else %}
-    <p>No genres set.</p>
-    {% endif %}
 
     <div class="g-tags-container">
-        {% if band_profile.moods.count %}
         <div>Moods:</div>
         {% for mood in band_profile.moods.all %}
         <div class="g-tags g-moods">{{ mood.name }}</div>
         {% endfor %}
     </div>
-    {% else %}
-    <p>No moods set.</p>
-    {% endif %}
     <a
         href="{% url 'gigstr:bands_update' band_profile.id %}"
         class="g-btn"

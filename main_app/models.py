@@ -111,13 +111,17 @@ class VenueProfile(models.Model):
     description = models.TextField(max_length=500, null=True, blank=True)
     image = models.CharField(max_length=50, null=True, blank=True)
     # hopefully tags can be implemented
+    moods = models.ManyToManyField(Mood)
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
 
     def get_absolute_url(self):
         return reverse("gigstr:venues_detail", kwargs={"venue_id": self.id})
     
     def __str__(self):
-        return self.name
+        if self.name:
+            return self.name
+        else:
+            return str(self.user_id)
     
 @receiver(post_save, sender=CustomUser)
 def create_venue_profile(sender, instance, created, **kwargs):

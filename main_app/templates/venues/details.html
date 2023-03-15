@@ -7,12 +7,6 @@
     <p>Description: {{ venue_profile.description }}</p>
     <p>Image: {{ venue_profile.image }}</p>
     <div class="g-tags-container">
-        <div>Genres:</div>
-        {% for genre in venue_profile.genres.all %}
-        <div class="g-tags g-genres">{{ genre.name }}</div>
-        {% endfor %}
-    </div>
-    <div class="g-tags-container">
         <div>Moods:</div>
         {% for mood in venue_profile.moods.all %}
         <div class="g-tags g-moods">{{ mood.name }}</div>
