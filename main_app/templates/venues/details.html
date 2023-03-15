@@ -1,9 +1,48 @@
-{%extends 'base.html'%}
-{% block content %}
-    <h1>Venue Details</h1>
-    <p>{{ venue_profile.name }}</p>
-    <p>{{ venue_profile.location }}</p>
-    <p>{{ venue_profile.website }}</p>
-    <p>{{ venue_profile.description }}</p>
-    <p>{{ venue_profile.image }}</p>
+{% extends 'base.html' %} {% block content %}
+<div class="g-profile-container">
+    <h3>Profile Details</h3>
+    <p>Name: {{ venue_profile.name }}</p>
+    <p>Location: {{ venue_profile.location }}</p>
+    <p>Website: {{ venue_profile.website }}</p>
+    <p>Description: {{ venue_profile.description }}</p>
+    <p>Image: {{ venue_profile.image }}</p>
+    <div class="g-tags-container">
+        <div>Genres:</div>
+        {% for genre in venue_profile.genres.all %}
+        <div class="g-tags g-genres">{{ genre.name }}</div>
+        {% endfor %}
+    </div>
+    <div class="g-tags-container">
+        <div>Moods:</div>
+        {% for mood in venue_profile.moods.all %}
+        <div class="g-tags g-moods">{{ mood.name }}</div>
+        {% endfor %}
+    </div>
+    <a
+        href="{% url 'gigstr:venues_update' venue_profile.id %}"
+        class="g-btn"
+        >Update</a
+    >
+</div>
+<div class="g-events-container">
+    <h3>Upcoming Events</h3>
+    <a
+        href="{% url 'gigstr:events_create' %}"
+        class="g-btn"
+        >Add New Event</a
+    >
+    <div class="g-events-container">
+        {% for event in venue_events %}
+        <div class="g-card">
+            <p>{{ event.date }}</p>
+            <p>{{ event.time }}</p>
+            {% for band in event.bands_set.all %}
+            <h5>{{ band.name }}</h5>
+            {% endfor %}
+            <h5>{{ event.venue }}</h5>
+            <a href="{% url 'gigstr:events_detail' event.id %}">View Details</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

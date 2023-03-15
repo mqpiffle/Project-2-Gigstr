@@ -1,12 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Rye&display=swap');
+
+:root {
+    --bg-clr-primary: hsl(207, 63%, 9%);
+    --fg-clr-primary: hsl(45, 63%, 90%);
+}
+
 *,
 *::before,
 *::after {
     box-sizing: border-box !important;
     margin: 0;
     padding: 0;
-    background-color: hsl(0, 0%, 18%) !important;
-    color: white;
+    background-color: var(--bg-clr-primary) !important;
+    color: var(--fg-clr-primary) !important;
 }
 
 h1,
@@ -23,6 +29,7 @@ body {
     font-weight: 400 !important;
     display: flex;
     flex-direction: column;
+    gap: 2rem;
     min-height: 100vh;
 }
 
@@ -32,7 +39,7 @@ main {
     margin: 0 auto;
 }
 
-.g-bands-container {
+.g-profile-container {
     margin: 2rem auto;
     display: flex;
     flex-direction: column;
@@ -66,7 +73,7 @@ main {
     font-weight: 600;
     margin: 0.5rem 0;
     padding: 0.5rem 1rem;
-    color: white !important;
+    color: var(--fg-clr-primary) !important;
     background-color: hsl(289, 28%, 45%) !important;
     border: none;
     border-radius: 0.5rem;
@@ -77,6 +84,12 @@ main {
 .g-btn:hover {
     background-color: hsl(289, 28%, 27%) !important;
     transition: background-color 180ms ease;
+}
+
+.g-btn-ctr-inline {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 .g-events-container {
     display: flex;
@@ -91,7 +104,8 @@ main {
 }
 .g-card,
 .g-card * {
+    font-weight: 600;
     margin: 0;
-    color: hsl(270, 100%, 9%) !important;
-    background-color: white !important;
+    color: var(--bg-clr-primary) !important;
+    background-color: var(--fg-clr-primary) !important;
 }

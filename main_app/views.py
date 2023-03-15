@@ -50,10 +50,14 @@ class VenueList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     permission_required = 'main_app.view_venueprofile'
     model = VenueProfile
     template_name = 'venues/index.html'
-class VenueProfileDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
-    permission_required = 'main_app.view_venueprofile'
-    model = VenueProfile
-    template_name = 'venues/details.html'
+# class VenueProfileDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+#     permission_required = 'main_app.view_venueprofile'
+#     model = VenueProfile
+#     template_name = 'venues/details.html'
+def VenueProfileDetail(request, venue_id):
+    venue = VenueProfile.objects.get(user=request.user.id)
+    venue_events = Event.objects.filter(venue=venue_id)
+    return render(request, 'venues/details.html', {'venue_profile': venue, 'venue_events': venue_events})
 
 class VenueProfileCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     permission_required = 'main_app.add_venueprofile'
@@ -66,7 +70,7 @@ class VenueProfileUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView
     fields = ['name', 'location', 'website','description', 'image']
 
 class VenueProfileDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
-    permission_required = 'main_app.remove_venueprofile'
+    permission_required = 'main_app.delete_venueprofile'
     model = VenueProfile
     success_url = '/venues/'  
 
@@ -122,7 +126,7 @@ class BandProfileUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView)
     fields = ['name', 'location', 'website','description', 'image', 'genres', 'moods']
 
 class BandProfileDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
-    permission_required = 'main_app.remove_bandprofile'
+    permission_required = 'main_app.delete_bandprofile'
     model = BandProfile
     success_url = '/bands/'   
 
@@ -131,10 +135,15 @@ class FanList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     permission_required = 'main_app.view_fanprofile'
     model = FanProfile
     template_name = 'fans/index.html'
-class FanProfileDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
-    permission_required = 'main_app.view_fanprofile'
-    model = FanProfile
-    template_name = 'fans/details.html'
+# class FanProfileDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+#     permission_required = 'main_app.view_fanprofile'
+#     model = FanProfile
+#     template_name = 'fans/details.html'
+
+def FanProfileDetail(request, fan_id):
+    fan = FanProfile.objects.get(user=request.user.id)
+    # band_events = Event.objects.filter(bands=band_id)
+    return render(request, 'fans/details.html', {'fan_profile': fan})
 
 class FanProfileCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     permission_required = 'main_app.add_fanprofile'
@@ -142,12 +151,12 @@ class FanProfileCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     fields = ['display_name', 'location', 'website','description', 'image']
 
 class FanProfileUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
-    permission_required = 'main_app.set_fanprofile'
+    permission_required = 'main_app.change_fanprofile'
     model = FanProfile
     fields = ['display_name', 'location', 'website','description', 'image']
 
 class FanProfileDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
-    permission_required = 'main_app.remove_fanprofile'
+    permission_required = 'main_app.delete_fanprofile'
     model = FanProfile
     success_url = '/fans/'
 
@@ -158,10 +167,18 @@ class EventList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     template_name = 'events/index.html'
     
 
-class EventDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
-    permission_required = 'main_app.view_event'
-    model = Event
-    template_name = 'events/details.html'
+# class EventDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+#     permission_required = 'main_app.view_event'
+#     model = Event
+#     template_name = 'events/details.html'
+
+def EventDetail(request, event_id):
+    event = Event.objects.get(id=event_id)
+    bands_ids = event.bands.all().values_list('id')
+    event_bands = BandProfile.objects.filter(id__in=bands_ids)
+    # band = BandProfile.objects.get(user=request.user.id)
+    # band_events = Event.objects.filter(bands=band_id)
+    return render(request, 'events/details.html', {'event': event, 'event_bands': event_bands})
 
 class EventCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     permission_required = 'main_app.add_event'
