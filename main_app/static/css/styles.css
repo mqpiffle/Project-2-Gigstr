@@ -2,10 +2,21 @@
 *,
 *::before,
 *::after {
-    background-color: hsl(270, 100%, 9%) !important;
+    box-sizing: border-box !important;
+    margin: 0;
+    padding: 0;
+    background-color: hsl(0, 0%, 18%) !important;
     color: white;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0;
+}
 body {
     font-family: 'Quicksand', sans-serif;
     font-size: 16px !important;
@@ -16,19 +27,71 @@ body {
 }
 
 main {
+    width: min(65ch, 98%);
     flex: 1;
+    margin: 0 auto;
 }
 
+.g-bands-container {
+    margin: 2rem auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.g-tags-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
 .g-tags {
+    display: flex;
+    align-items: baseline;
+    width: fit-content;
     font-weight: 600;
-    padding: 0.125rem 0.5rem;
+    padding: 0 0.5rem;
     color: black !important;
     border-radius: 0.5rem;
 }
 .g-genres {
-    background-color: rgb(162, 162, 81) !important;
+    background-color: hsl(63, 27%, 72%) !important;
 }
 
 .g-moods {
-    background-color: rgb(108, 126, 180) !important;
+    background-color: hsl(225, 27%, 72%) !important;
+}
+
+.g-btn {
+    width: fit-content;
+    font-weight: 600;
+    margin: 0.5rem 0;
+    padding: 0.5rem 1rem;
+    color: white !important;
+    background-color: hsl(289, 28%, 45%) !important;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 180ms ease;
+}
+
+.g-btn:hover {
+    background-color: hsl(289, 28%, 27%) !important;
+    transition: background-color 180ms ease;
+}
+.g-events-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.g-card {
+    width: min(480px, 100%);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 3px 3px 9px hsl(0 0% 0% / 0.5);
+}
+.g-card,
+.g-card * {
+    margin: 0;
+    color: hsl(270, 100%, 9%) !important;
+    background-color: white !important;
 }

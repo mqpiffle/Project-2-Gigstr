@@ -1,14 +1,24 @@
-{%extends 'base.html'%}
-{% block content %}
-    <h1>Event</h1>
-    <p>{{ event.start_date_time }}</p>
-    <p>{{ event.end_date_time }}</p>
-    <p>{{ event.ticket_price }}</p>
-    <p>{{ event.note }}</p>
-    <ul>
+{%extends 'base.html'%} {% block content %}
+<h1>Event</h1>
+<ul>
     {% for band in event.bands_set.all %}
-        <li>{{ band.name }}</p>
+    <li>{{ band.name }}</li>
     {% endfor %}
-    </ul>
-    <p>{{ event.venue.name }}</p>
+</ul>
+<p>at {{ event.venue.name }}</p>
+<p>{{ event.start_date_time }}</p>
+<p>{{ event.end_date_time }}</p>
+<p>{{ event.ticket_price }}</p>
+<p>{{ event.note }}</p>
+
+<a
+    href="{% url 'gigstr:events_update' event.id %}"
+    class="g-btn"
+    >Edit</a
+>
+<a
+    href="{% url 'gigstr:events_delete' event.id %}"
+    class="g-btn"
+    >Delete</a
+>
 {% endblock %}

@@ -22,7 +22,6 @@ import pdb
 # function view
 # first step is to recreate the home view on its own with a custom view
 def home(request):
-    print(request.resolver_match.url_name)
     # pdb.set_trace()
 # next step - see if the home view can process their role
     if request.user.is_authenticated:
@@ -94,10 +93,9 @@ class BandList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
 #         return context
     
 def BandProfileDetail(request, band_id):
-    band = BandProfile.objects.get(id=band_id)
+    band = BandProfile.objects.get(user=request.user.id)
     band_events = Event.objects.filter(bands=band_id)
-    print(band_events)
-    return render(request, 'bands/details.html', {'band_profile': band})
+    return render(request, 'bands/details.html', {'band_profile': band, 'band_events': band_events})
     
 class BandProfileCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     permission_required = 'main_app.add_bandprofile'
@@ -158,6 +156,7 @@ class EventList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     permission_required = 'main_app.view_event'
     model = Event
     template_name = 'events/index.html'
+    
 
 class EventDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     permission_required = 'main_app.view_event'
@@ -178,14 +177,14 @@ class EventCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     
 
 class EventUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
-    permission_required = 'main_app.set_event'
+    permission_required = 'main_app.change_event'
     model = Event
     fields = ['date', 'time', 'ticket_price', 'note', 'bands', 'venue']
 
 class EventDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
-    permission_required = 'main_app.remove_event'
+    permission_required = 'main_app.delete_event'
     model = Event
-    success_url = '/events/'
+    success_url = 'gigstr:home'
 
 # class Login(View):
 #     def get(self, request):

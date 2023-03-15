@@ -1,8 +1,10 @@
-{% extends 'base.html' %} 
-{% block content %}
-    <h3>All Bands</h3>
-    {% for band in bands %}
-        <p>{{ band.name }}</p>
-        <a href="{% url 'gigstr:bands_detail' band.id %}">View</a>
-    {% endfor %} 
-{% endblock%}
+{% extends 'base.html' %} {% block content %}
+<h3>All Bands</h3>
+{% for band in bands %}
+<p>{{ band.name }}</p>
+<a
+    href="{% url 'gigstr:bands_detail' band.id %}"
+    class="btn"
+    >View</a
+>
+{% endfor %} {% endblock%}

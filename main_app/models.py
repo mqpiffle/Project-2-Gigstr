@@ -137,7 +137,7 @@ class Event(models.Model):
         ordering = ['-date']
 
     def get_absolute_url(self):
-        return reverse('gigstr:events_detail', kwargs={'event_id': self.id})
+        return reverse('gigstr:events_detail', kwargs={'pk': self.pk})
     
 
 class Star(models.Model):
