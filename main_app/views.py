@@ -10,8 +10,10 @@ from .models import Event, FanProfile, BandProfile, VenueProfile
 from .forms import CustomUserCreationForm, EventForm
 # AUTH
 from django.contrib.auth import login, authenticate
-# MIXINS
+# MIXINS AND DECORATORS
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.decorators import login_required, permission_required
+# PYTHON DEBUGGING TOOL
 import pdb
 # !! CHECK OUT PermissionsRequiredMixin
 # to give routes permissions based on user role/group
@@ -54,6 +56,8 @@ class VenueList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
 #     permission_required = 'main_app.view_venueprofile'
 #     model = VenueProfile
 #     template_name = 'venues/details.html'
+@login_required
+@permission_required('main_app.view_venueprofile')
 def VenueProfileDetail(request, venue_id):
     venue = VenueProfile.objects.get(user=request.user.id)
     venue_events = Event.objects.filter(venue=venue_id)
@@ -95,7 +99,8 @@ class BandList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
 #         context['our_events'] = Event.objects.filter(bands=band)
 #         context['band_profile'] = band
 #         return context
-    
+@login_required
+@permission_required('main_app.view_bandprofile')
 def BandProfileDetail(request, band_id):
     band = BandProfile.objects.get(user=request.user.id)
     band_events = Event.objects.filter(bands=band_id)
@@ -139,7 +144,8 @@ class FanList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
 #     permission_required = 'main_app.view_fanprofile'
 #     model = FanProfile
 #     template_name = 'fans/details.html'
-
+@login_required
+@permission_required('main_app.view_fanprofile')
 def FanProfileDetail(request, fan_id):
     fan = FanProfile.objects.get(user=request.user.id)
     # band_events = Event.objects.filter(bands=band_id)
@@ -171,7 +177,8 @@ class EventList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
 #     permission_required = 'main_app.view_event'
 #     model = Event
 #     template_name = 'events/details.html'
-
+@login_required
+@permission_required('main_app.view_event')
 def EventDetail(request, event_id):
     event = Event.objects.get(id=event_id)
     bands_ids = event.bands.all().values_list('id')
