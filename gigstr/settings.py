@@ -85,12 +85,12 @@ WSGI_APPLICATION = 'gigstr.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'gigstr',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'gigstr',
+#     }
+# }
 DATABASES = {
     'default': dj_database_url.config(default='postgresql://postgres:postgres@localhost:5432/gigstr',        
     conn_max_age=600)
